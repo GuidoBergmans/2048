@@ -191,6 +191,146 @@ function drawTile (pos_x: number, pos_y: number, num: number) {
             .77777777777777777777777.
             .........................
             `, SpriteKind.Player)
+    } else if (num == 128) {
+        newTile = sprites.create(img`
+            .........................
+            .88888888888888888888888.
+            .88888888888888888888888.
+            .88888888888888888888888.
+            .88888888888888888888888.
+            .88888888888888888888888.
+            .88888888888888888888888.
+            .88888888888888888888888.
+            .88888888888888888888888.
+            .88888f8888fff888fff8888.
+            .888fff888f888f8f888f888.
+            .88888f8888888f8f888f888.
+            .88888f88888ff888fff8888.
+            .88888f8888f8888f888f888.
+            .88888f888f88888f888f888.
+            .888fffff8fffff88fff8888.
+            .88888888888888888888888.
+            .88888888888888888888888.
+            .88888888888888888888888.
+            .88888888888888888888888.
+            .88888888888888888888888.
+            .88888888888888888888888.
+            .88888888888888888888888.
+            .88888888888888888888888.
+            .........................
+            `, SpriteKind.Player)
+    } else if (num == 256) {
+        newTile = sprites.create(img`
+            .........................
+            .99999999999999999999999.
+            .99999999999999999999999.
+            .99999999999999999999999.
+            .99999999999999999999999.
+            .99999999999999999999999.
+            .99999999999999999999999.
+            .99999999999999999999999.
+            .99999999999999999999999.
+            .9999fff99fffff99fff9999.
+            .999f999f9f99999f999f999.
+            .9999999f9f99999f9999999.
+            .99999ff99ffff99ffff9999.
+            .9999f99999999f9f999f999.
+            .999f999999999f9f999f999.
+            .999fffff9ffff999fff9999.
+            .99999999999999999999999.
+            .99999999999999999999999.
+            .99999999999999999999999.
+            .99999999999999999999999.
+            .99999999999999999999999.
+            .99999999999999999999999.
+            .99999999999999999999999.
+            .99999999999999999999999.
+            .........................
+            `, SpriteKind.Player)
+    } else if (num == 512) {
+        newTile = sprites.create(img`
+            .........................
+            .aaaaaaaaaaaaaaaaaaaaaaa.
+            .aaaaaaaaaaaaaaaaaaaaaaa.
+            .aaaaaaaaaaaaaaaaaaaaaaa.
+            .aaaaaaaaaaaaaaaaaaaaaaa.
+            .aaaaaaaaaaaaaaaaaaaaaaa.
+            .aaaaaaaaaaaaaaaaaaaaaaa.
+            .aaaaaaaaaaaaaaaaaaaaaaa.
+            .aaaaaaaaaaaaaaaaaaaaaaa.
+            .aaafffffaaafaaaafffaaaa.
+            .aaafaaaaafffaaafaaafaaa.
+            .aaafaaaaaaafaaaaaaafaaa.
+            .aaaffffaaaafaaaaaffaaaa.
+            .aaaaaaafaaafaaaafaaaaaa.
+            .aaaaaaafaaafaaafaaaaaaa.
+            .aaaffffaafffffafffffaaa.
+            .aaaaaaaaaaaaaaaaaaaaaaa.
+            .aaaaaaaaaaaaaaaaaaaaaaa.
+            .aaaaaaaaaaaaaaaaaaaaaaa.
+            .aaaaaaaaaaaaaaaaaaaaaaa.
+            .aaaaaaaaaaaaaaaaaaaaaaa.
+            .aaaaaaaaaaaaaaaaaaaaaaa.
+            .aaaaaaaaaaaaaaaaaaaaaaa.
+            .aaaaaaaaaaaaaaaaaaaaaaa.
+            .........................
+            `, SpriteKind.Player)
+    } else if (num == 1024) {
+        newTile = sprites.create(img`
+            .........................
+            .bbbbbbbbbbbbbbbbbbbbbbb.
+            .bbbbbbbbbbbbbbbbbbbbbbb.
+            .bbbbbbbbbbbbbbbbbbbbbbb.
+            .bbbbbbbbbbbbbbbbbbbbbbb.
+            .bbbbbbbbbbbbbbbbbbbbbbb.
+            .bbbbbbbbbbbbbbbbbbbbbbb.
+            .bbbbbbbbbbbbbbbbbbbbbbb.
+            .bbbbbbbbbbbbbbbbbbbbbbb.
+            .bbfbbbbfffbbbfffbbfbbfb.
+            .fffbbbfbbbfbfbbbfbfbbfb.
+            .bbfbbbfbbbfbbbbbfbfbbfb.
+            .bbfbbbfbbbfbbbffbbfbbfb.
+            .bbfbbbfbbbfbbfbbbbfffff.
+            .bbfbbbfbbbfbfbbbbbbbbfb.
+            .fffffbbfffbbfffffbbbbfb.
+            .bbbbbbbbbbbbbbbbbbbbbbb.
+            .bbbbbbbbbbbbbbbbbbbbbbb.
+            .bbbbbbbbbbbbbbbbbbbbbbb.
+            .bbbbbbbbbbbbbbbbbbbbbbb.
+            .bbbbbbbbbbbbbbbbbbbbbbb.
+            .bbbbbbbbbbbbbbbbbbbbbbb.
+            .bbbbbbbbbbbbbbbbbbbbbbb.
+            .bbbbbbbbbbbbbbbbbbbbbbb.
+            .........................
+            `, SpriteKind.Player)
+    } else if (num == 2048) {
+        newTile = sprites.create(img`
+            .........................
+            .ccccccccccccccccccccccc.
+            .ccccccccccccccccccccccc.
+            .ccccccccccccccccccccccc.
+            .ccccccccccccccccccccccc.
+            .ccccccccccccccccccccccc.
+            .ccccccccccccccccccccccc.
+            .ccccccccccccccccccccccc.
+            .ccccccccccccccccccccccc.
+            .cfffcccfffccfccfcccfffc.
+            .fcccfcfcccfcfccfccfcccf.
+            .ccccfcfcccfcfccfccfcccf.
+            .ccffccfcccfcfccfcccfffc.
+            .cfccccfcccfcfffffcfcccf.
+            .fcccccfcccfccccfccfcccf.
+            .fffffccfffcccccfcccfffc.
+            .ccccccccccccccccccccccc.
+            .ccccccccccccccccccccccc.
+            .ccccccccccccccccccccccc.
+            .ccccccccccccccccccccccc.
+            .ccccccccccccccccccccccc.
+            .ccccccccccccccccccccccc.
+            .ccccccccccccccccccccccc.
+            .ccccccccccccccccccccccc.
+            .........................
+            `, SpriteKind.Player)
     } else {
         newTile = sprites.create(img`
             .........................
