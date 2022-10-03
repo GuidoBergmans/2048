@@ -2,6 +2,7 @@ namespace SpriteKind {
     export const tile = SpriteKind.create()
 }
 function DrawScreen () {
+    sprites.destroyAllSpritesOfKind(SpriteKind.tile)
     index = 0
     for (let y = 0; y <= cells_y - 1; y++) {
         for (let x = 0; x <= cells_x - 1; x++) {
@@ -19,6 +20,33 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     move(right)
 })
+function AddTile () {
+    if (randint(1, 10) <= 2) {
+        new_tile_value = 4
+    } else {
+        new_tile_value = 2
+    }
+    empty_cells = 0
+    for (let index = 0; index <= cells; index++) {
+        if (list[index] == 0) {
+            empty_cells = empty_cells + 1
+        }
+    }
+    if (empty_cells == 0) {
+        return 0
+    }
+    new_tile_index = randint(0, empty_cells - 1)
+    for (let index = 0; index <= cells; index++) {
+        if (list[index] != 0) {
+            new_tile_index = new_tile_index + 1
+        }
+        if (index == new_tile_index) {
+            break;
+        }
+    }
+    list[new_tile_index] = new_tile_value
+    return 1
+}
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     move(down)
 })
@@ -78,7 +106,7 @@ function drawTile (pos_x: number, pos_y: number, num: number) {
             .33333333333333333333333.
             .33333333333333333333333.
             .........................
-            `, SpriteKind.Player)
+            `, SpriteKind.tile)
     } else if (num == 8) {
         newTile = sprites.create(img`
             .........................
@@ -106,7 +134,7 @@ function drawTile (pos_x: number, pos_y: number, num: number) {
             .44444444444444444444444.
             .44444444444444444444444.
             .........................
-            `, SpriteKind.Player)
+            `, SpriteKind.tile)
     } else if (num == 16) {
         newTile = sprites.create(img`
             .........................
@@ -134,7 +162,7 @@ function drawTile (pos_x: number, pos_y: number, num: number) {
             .55555555555555555555555.
             .55555555555555555555555.
             .........................
-            `, SpriteKind.Player)
+            `, SpriteKind.tile)
     } else if (num == 32) {
         newTile = sprites.create(img`
             .........................
@@ -162,7 +190,7 @@ function drawTile (pos_x: number, pos_y: number, num: number) {
             .66666666666666666666666.
             .66666666666666666666666.
             .........................
-            `, SpriteKind.Player)
+            `, SpriteKind.tile)
     } else if (num == 64) {
         newTile = sprites.create(img`
             .........................
@@ -190,7 +218,7 @@ function drawTile (pos_x: number, pos_y: number, num: number) {
             .77777777777777777777777.
             .77777777777777777777777.
             .........................
-            `, SpriteKind.Player)
+            `, SpriteKind.tile)
     } else if (num == 128) {
         newTile = sprites.create(img`
             .........................
@@ -218,7 +246,7 @@ function drawTile (pos_x: number, pos_y: number, num: number) {
             .88888888888888888888888.
             .88888888888888888888888.
             .........................
-            `, SpriteKind.Player)
+            `, SpriteKind.tile)
     } else if (num == 256) {
         newTile = sprites.create(img`
             .........................
@@ -246,7 +274,7 @@ function drawTile (pos_x: number, pos_y: number, num: number) {
             .99999999999999999999999.
             .99999999999999999999999.
             .........................
-            `, SpriteKind.Player)
+            `, SpriteKind.tile)
     } else if (num == 512) {
         newTile = sprites.create(img`
             .........................
@@ -274,7 +302,7 @@ function drawTile (pos_x: number, pos_y: number, num: number) {
             .aaaaaaaaaaaaaaaaaaaaaaa.
             .aaaaaaaaaaaaaaaaaaaaaaa.
             .........................
-            `, SpriteKind.Player)
+            `, SpriteKind.tile)
     } else if (num == 1024) {
         newTile = sprites.create(img`
             .........................
@@ -302,7 +330,7 @@ function drawTile (pos_x: number, pos_y: number, num: number) {
             .bbbbbbbbbbbbbbbbbbbbbbb.
             .bbbbbbbbbbbbbbbbbbbbbbb.
             .........................
-            `, SpriteKind.Player)
+            `, SpriteKind.tile)
     } else if (num == 2048) {
         newTile = sprites.create(img`
             .........................
@@ -330,33 +358,33 @@ function drawTile (pos_x: number, pos_y: number, num: number) {
             .ccccccccccccccccccccccc.
             .ccccccccccccccccccccccc.
             .........................
-            `, SpriteKind.Player)
+            `, SpriteKind.tile)
     } else {
         newTile = sprites.create(img`
             .........................
-            .44444444444444444444444.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .4.....................4.
-            .44444444444444444444444.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
+            .ddddddddddddddddddddddd.
             .........................
             `, SpriteKind.tile)
     }
@@ -373,7 +401,12 @@ function move (direction: number) {
             }
         }
     } else if (direction == down) {
-    	
+        if (AddTile() == 0) {
+            for (let index = 0; index <= cells; index++) {
+                list[index] = empty_cell
+            }
+        }
+        DrawScreen()
     } else if (direction == left) {
     	
     } else {
@@ -381,8 +414,13 @@ function move (direction: number) {
     }
 }
 let newTile: Sprite = null
+let new_tile_index = 0
+let empty_cells = 0
+let new_tile_value = 0
 let index = 0
+let empty_cell = 0
 let list: number[] = []
+let cells = 0
 let cells_y = 0
 let cells_x = 0
 let right = 0
@@ -395,11 +433,10 @@ left = 2
 right = 3
 cells_x = 4
 cells_y = 4
-let cells = cells_x * cells_y
+cells = cells_x * cells_y
 let max_cell_index = cells - 1
 list = [cells_x, cells_y]
 for (let index2 = 0; index2 <= max_cell_index; index2++) {
-    let empty_cell = 0
     list[index2] = empty_cell
 }
 let index1 = randint(0, max_cell_index)
@@ -407,7 +444,7 @@ let index2 = randint(0, max_cell_index - 1)
 if (index2 >= index1) {
     index2 = index2 + 1
 }
-list[index1] = randint(1, 2) * 2
-list[index2] = randint(1, 2) * 2
+AddTile()
+AddTile()
 scene.setBackgroundColor(1)
 DrawScreen()
