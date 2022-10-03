@@ -362,12 +362,11 @@ function drawTile (pos_x: number, pos_y: number, num: number) {
     }
     newTile.left = pos_x * newTile.width
     newTile.top = pos_y * newTile.height
-    tiles2.push(newTile)
 }
 function move (direction: number) {
     if (direction == up) {
-        for (let x = 0; x <= cells_x; x++) {
-            for (let y = 0; y <= cells_y; y++) {
+        for (let x2 = 0; x2 <= cells_x; x2++) {
+            for (let y2 = 0; y2 <= cells_y; y2++) {
                 if (list[0] == 0) {
                 	
                 }
@@ -383,35 +382,28 @@ function move (direction: number) {
 }
 let newTile: Sprite = null
 let index = 0
-let tiles2: Sprite[] = []
 let list: number[] = []
-let right = 0
-let left = 0
-let down = 0
 let up = 0
-let cells_y = 0
-let cells_x = 0
+let down = 1
+let left = 2
+let right = 3
+let cells_x = 4
+let cells_y = 4
+let empty_cell = 0
 scene.setBackgroundColor(13)
-cells_x = 4
-cells_y = 4
 let cells = cells_x * cells_y
 let max_cell_index = cells - 1
 up = scene.screenHeight()
-down = 1
-left = 2
-right = 3
 list = [cells_x, cells_y]
-for (let index = 0; index <= max_cell_index; index++) {
-    let empty_cell = 0
-    list[index] = empty_cell
+for (let index2 = 0; index2 <= max_cell_index; index2++) {
+    list[index2] = empty_cell
 }
 let index1 = randint(0, max_cell_index)
-let index2 = randint(0, max_cell_index - 1)
-if (index2 >= index1) {
-    index2 = index2 + 1
+let index22 = randint(0, max_cell_index - 1)
+if (index22 >= index1) {
+    index22 = index22 + 1
 }
 list[index1] = randint(1, 2) * 2
-list[index2] = randint(1, 2) * 2
-tiles2 = sprites.allOfKind(SpriteKind.tile)
+list[index22] = randint(1, 2) * 2
 scene.setBackgroundColor(1)
 DrawScreen()
