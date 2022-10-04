@@ -3,19 +3,28 @@ namespace SpriteKind {
 }
 function DrawScreen () {
     sprites.destroyAllSpritesOfKind(SpriteKind.tile)
-    index = 0
+    index4 = 0
     for (let y = 0; y <= cells_y - 1; y++) {
         for (let x = 0; x <= cells_x - 1; x++) {
-            drawTile(x, y, list[index])
-            index = index + 1
+            drawTile(x, y, list[index4])
+            index4 = index4 + 1
         }
     }
 }
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     move(up)
 })
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (AddTile() == 0) {
+        for (let index3 = 0; index3 <= cells; index3++) {
+            list[index3] = empty_cell
+        }
+    }
+    DrawScreen()
+})
 function xyToIndex (x: number, y: number) {
-    return y * cells_x + x
+    result = y * cells_x + x
+    return result
 }
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     move(left)
@@ -39,11 +48,11 @@ function AddTile () {
         return 0
     }
     new_tile_index = randint(0, empty_cells - 1)
-    for (let index = 0; index <= cells; index++) {
-        if (list[index] != 0) {
+    for (let index2 = 0; index2 <= cells; index2++) {
+        if (list[index2] != 0) {
             new_tile_index = new_tile_index + 1
         }
-        if (index == new_tile_index) {
+        if (index2 == new_tile_index) {
             break;
         }
     }
@@ -396,14 +405,18 @@ function drawTile (pos_x: number, pos_y: number, num: number) {
 }
 function move (direction: number) {
     if (direction == up) {
-        for (let x = 0; x <= cells_x; x++) {
-            for (let y1 = 0; y1 <= cells_y - 1; y1++) {
+        for (let x2 = 0; x2 <= cells_x - 1; x2++) {
+            for (let y1 = 0; y1 <= cells_y - 2; y1++) {
                 for (let y2 = 0; y2 <= cells_y - (y1 + 1); y2++) {
-                    y3 = y2 + 1
-                    if (list[xyToIndex(x, y1)] == empty_cell) {
-                        if (list[xyToIndex(x, y3)] != empty_cell) {
-                            list[xyToIndex(x, y1)] = list[xyToIndex(x, y3)]
-                            list[xyToIndex(x, y3)] = empty_cell
+                    y3 = y1 + y2
+                    if (list[xyToIndex(x2, y1)] == empty_cell) {
+                        if (list[xyToIndex(x2, y3)] != empty_cell) {
+                            index1 = xyToIndex(x2, y1)
+                            index2 = xyToIndex(x2, y3)
+                            new_tile_value = list[index2]
+                            list[index1] = new_tile_value
+                            list[index2] = empty_cell
+                            DrawScreen()
                             break;
                         }
                     }
@@ -411,27 +424,81 @@ function move (direction: number) {
             }
         }
     } else if (direction == down) {
-        if (AddTile() == 0) {
-            for (let index = 0; index <= cells; index++) {
-                list[index] = empty_cell
+        for (let x2 = 0; x2 <= cells_x - 1; x2++) {
+            for (let y1 = 0; y1 <= cells_y - 2; y1++) {
+                for (let y2 = 0; y2 <= cells_y - (y1 + 1); y2++) {
+                    y3 = cells_y - (y1 + y2 + 1)
+                    y4 = cells_y - (y1 + 1)
+                    if (list[xyToIndex(x2, y4)] == empty_cell) {
+                        if (list[xyToIndex(x2, y3)] != empty_cell) {
+                            index1 = xyToIndex(x2, y4)
+                            index2 = xyToIndex(x2, y3)
+                            new_tile_value = list[index2]
+                            list[index1] = new_tile_value
+                            list[index2] = empty_cell
+                            DrawScreen()
+                        }
+                    }
+                }
             }
         }
-    } else if (direction == left) {
-    	
+    } else if (direction == right) {
+        for (let y2 = 0; y2 <= cells_y - 1; y2++) {
+            for (let x1 = 0; x1 <= cells_x - 2; x1++) {
+                for (let x2 = 0; x2 <= cells_x - (x1 + 1); x2++) {
+                    x3 = cells_x - (x1 + x2 + 1)
+                    x4 = cells_x - (x1 + 1)
+                    if (list[xyToIndex(x4, y2)] == empty_cell) {
+                        if (list[xyToIndex(x3, y2)] != empty_cell) {
+                            index1 = xyToIndex(x4, y2)
+                            index2 = xyToIndex(x3, y2)
+                            new_tile_value = list[index2]
+                            list[index1] = new_tile_value
+                            list[index2] = empty_cell
+                            DrawScreen()
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     } else {
-    	
+        for (let y2 = 0; y2 <= cells_y - 1; y2++) {
+            for (let x1 = 0; x1 <= cells_x - 2; x1++) {
+                for (let x2 = 0; x2 <= cells_x - (x1 + 1); x2++) {
+                    x3 = x1 + x2
+                    if (list[xyToIndex(x1, y2)] == empty_cell) {
+                        if (list[xyToIndex(x3, y2)] != empty_cell) {
+                            index1 = xyToIndex(x1, y2)
+                            index2 = xyToIndex(x3, y2)
+                            new_tile_value = list[index2]
+                            list[index1] = new_tile_value
+                            list[index2] = empty_cell
+                            DrawScreen()
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
     DrawScreen()
 }
+let x4 = 0
+let x3 = 0
+let y4 = 0
 let y3 = 0
 let newTile: Sprite = null
 let new_tile_index = 0
 let empty_cells = 0
 let new_tile_value = 0
-let index = 0
-let empty_cell = 0
+let result = 0
+let index4 = 0
+let index2 = 0
+let index1 = 0
 let list: number[] = []
 let cells = 0
+let empty_cell = 0
 let cells_y = 0
 let cells_x = 0
 let right = 0
@@ -444,14 +511,15 @@ left = 2
 right = 3
 cells_x = 4
 cells_y = 4
+empty_cell = 0
 cells = cells_x * cells_y
 let max_cell_index = cells - 1
 list = [cells_x, cells_y]
-for (let index2 = 0; index2 <= max_cell_index; index2++) {
-    list[index2] = empty_cell
+for (let index23 = 0; index23 <= max_cell_index; index23++) {
+    list[index23] = empty_cell
 }
-let index1 = randint(0, max_cell_index)
-let index2 = randint(0, max_cell_index - 1)
+index1 = randint(0, max_cell_index)
+index2 = randint(0, max_cell_index - 1)
 if (index2 >= index1) {
     index2 = index2 + 1
 }
