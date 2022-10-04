@@ -14,6 +14,9 @@ function DrawScreen () {
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     move(up)
 })
+function xyToIndex (x: number, y: number) {
+    return y * cells_x + x
+}
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     move(left)
 })
@@ -394,9 +397,16 @@ function drawTile (pos_x: number, pos_y: number, num: number) {
 function move (direction: number) {
     if (direction == up) {
         for (let x = 0; x <= cells_x; x++) {
-            for (let y = 0; y <= cells_y; y++) {
-                if (list[0] == 0) {
-                	
+            for (let y1 = 0; y1 <= cells_y - 1; y1++) {
+                for (let y2 = 0; y2 <= cells_y - (y1 + 1); y2++) {
+                    y3 = y2 + 1
+                    if (list[xyToIndex(x, y1)] == empty_cell) {
+                        if (list[xyToIndex(x, y3)] != empty_cell) {
+                            list[xyToIndex(x, y1)] = list[xyToIndex(x, y3)]
+                            list[xyToIndex(x, y3)] = empty_cell
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -406,13 +416,14 @@ function move (direction: number) {
                 list[index] = empty_cell
             }
         }
-        DrawScreen()
     } else if (direction == left) {
     	
     } else {
     	
     }
+    DrawScreen()
 }
+let y3 = 0
 let newTile: Sprite = null
 let new_tile_index = 0
 let empty_cells = 0
