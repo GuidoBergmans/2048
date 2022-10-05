@@ -8,10 +8,10 @@ function press (direction: number) {
         move(direction)
     }
     if (did_move || did_merge) {
-        AddHistory()
         if (!(AddTile())) {
             game.over(false)
         }
+        AddHistory()
     } else {
         if (EmptyCells() == 0 && !(MergePossible())) {
             game.over(false)
@@ -33,7 +33,7 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     press(up)
 })
 function GetHistory () {
-    if (history.length >= cells) {
+    if (history.length > cells) {
         for (let index = 0; index <= max_cell_index; index++) {
             list[index] = history[history.length - cells + index]
         }
