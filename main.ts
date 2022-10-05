@@ -1,6 +1,17 @@
 namespace SpriteKind {
     export const tile = SpriteKind.create()
 }
+function press (direction: number) {
+    move(direction)
+    merge(direction)
+    move(direction)
+    if (!(AddTile())) {
+        for (let index3 = 0; index3 <= cells; index3++) {
+            list[index3] = empty_cell
+        }
+    }
+    DrawScreen()
+}
 function DrawScreen () {
     sprites.destroyAllSpritesOfKind(SpriteKind.tile)
     index4 = 0
@@ -12,25 +23,68 @@ function DrawScreen () {
     }
 }
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
-    move(up)
-})
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (AddTile() == 0) {
-        for (let index3 = 0; index3 <= cells; index3++) {
-            list[index3] = empty_cell
-        }
-    }
-    DrawScreen()
+    press(up)
 })
 function xyToIndex (x: number, y: number) {
     result = y * cells_x + x
     return result
 }
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
-    move(left)
+    press(left)
 })
+function merge (direction: number) {
+    if (direction == up) {
+        for (let x2 = 0; x2 <= cells_x - 1; x2++) {
+            for (let y1 = 0; y1 <= cells_y - 2; y1++) {
+                index1 = xyToIndex(x2, y1)
+                index2 = xyToIndex(x2, y1 + 1)
+                if (list[index1] == list[index2]) {
+                    new_tile_value = list[index1] * 2
+                    list[index1] = new_tile_value
+                    list[index2] = empty_cell
+                }
+            }
+        }
+    } else if (direction == down) {
+        for (let x2 = 0; x2 <= cells_x - 1; x2++) {
+            for (let y1 = 0; y1 <= cells_y - 2; y1++) {
+                index1 = xyToIndex(x2, cells_y - (y1 + 1))
+                index2 = xyToIndex(x2, cells_y - (y1 + 1 + 1))
+                if (list[index1] == list[index2]) {
+                    new_tile_value = list[index1] * 2
+                    list[index1] = new_tile_value
+                    list[index2] = empty_cell
+                }
+            }
+        }
+    } else if (direction == right) {
+        for (let y1 = 0; y1 <= cells_y - 1; y1++) {
+            for (let x2 = 0; x2 <= cells_x - 2; x2++) {
+                index1 = xyToIndex(cells_x - (x2 + 1), y1)
+                index2 = xyToIndex(cells_x - (x2 + 1 + 1), y1)
+                if (list[index1] == list[index2]) {
+                    new_tile_value = list[index1] * 2
+                    list[index1] = new_tile_value
+                    list[index2] = empty_cell
+                }
+            }
+        }
+    } else {
+        for (let y1 = 0; y1 <= cells_y - 1; y1++) {
+            for (let x2 = 0; x2 <= cells_x - 2; x2++) {
+                index1 = xyToIndex(x2, y1)
+                index2 = xyToIndex(x2 + 1, y1)
+                if (list[index1] == list[index2]) {
+                    new_tile_value = list[index1] * 2
+                    list[index1] = new_tile_value
+                    list[index2] = empty_cell
+                }
+            }
+        }
+    }
+}
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
-    move(right)
+    press(right)
 })
 function AddTile () {
     if (randint(1, 10) <= 2) {
@@ -45,7 +99,7 @@ function AddTile () {
         }
     }
     if (empty_cells == 0) {
-        return 0
+        return false
     }
     new_tile_index = randint(0, empty_cells - 1)
     for (let index2 = 0; index2 <= cells; index2++) {
@@ -57,10 +111,10 @@ function AddTile () {
         }
     }
     list[new_tile_index] = new_tile_value
-    return 1
+    return true
 }
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
-    move(down)
+    press(down)
 })
 function drawTile (pos_x: number, pos_y: number, num: number) {
     if (num == 2) {
@@ -416,7 +470,6 @@ function move (direction: number) {
                             new_tile_value = list[index2]
                             list[index1] = new_tile_value
                             list[index2] = empty_cell
-                            DrawScreen()
                             break;
                         }
                     }
@@ -436,7 +489,7 @@ function move (direction: number) {
                             new_tile_value = list[index2]
                             list[index1] = new_tile_value
                             list[index2] = empty_cell
-                            DrawScreen()
+                            break;
                         }
                     }
                 }
@@ -455,7 +508,6 @@ function move (direction: number) {
                             new_tile_value = list[index2]
                             list[index1] = new_tile_value
                             list[index2] = empty_cell
-                            DrawScreen()
                             break;
                         }
                     }
@@ -474,7 +526,6 @@ function move (direction: number) {
                             new_tile_value = list[index2]
                             list[index1] = new_tile_value
                             list[index2] = empty_cell
-                            DrawScreen()
                             break;
                         }
                     }
@@ -482,7 +533,6 @@ function move (direction: number) {
             }
         }
     }
-    DrawScreen()
 }
 let x4 = 0
 let x3 = 0
