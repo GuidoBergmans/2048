@@ -8,6 +8,7 @@ function press (direction: number) {
         move(direction)
     }
     if (did_move || did_merge) {
+        AddHistory()
         if (!(AddTile())) {
             game.over(false)
         }
@@ -31,6 +32,16 @@ function DrawScreen () {
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     press(up)
 })
+function GetHistory () {
+    if (history.length >= cells) {
+        for (let index = 0; index <= max_cell_index; index++) {
+            list[index] = history[history.length - cells + index]
+        }
+        for (let index = 0; index <= max_cell_index; index++) {
+            history.pop()
+        }
+    }
+}
 function MergePossible () {
     for (let x2 = 0; x2 <= cells_x - 1; x2++) {
         for (let y1 = 0; y1 <= cells_y - 2; y1++) {
@@ -53,6 +64,15 @@ function MergePossible () {
         }
     }
     return false
+}
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    GetHistory()
+    DrawScreen()
+})
+function AddHistory () {
+    for (let index = 0; index <= max_cell_index; index++) {
+        history.push(list[index])
+    }
 }
 function xyToIndex (x: number, y: number) {
     result = y * cells_x + x
@@ -602,9 +622,11 @@ let value = 0
 let index4 = 0
 let did_merge = false
 let did_move = false
+let history: number[] = []
 let index2 = 0
 let index1 = 0
 let list: number[] = []
+let max_cell_index = 0
 let cells = 0
 let empty_cell = 0
 let cells_y = 0
@@ -621,10 +643,10 @@ cells_x = 4
 cells_y = 4
 empty_cell = 0
 cells = cells_x * cells_y
-let max_cell_index = cells - 1
+max_cell_index = cells - 1
 list = [cells_x, cells_y]
-for (let index23 = 0; index23 <= max_cell_index; index23++) {
-    list[index23] = empty_cell
+for (let index = 0; index <= max_cell_index; index++) {
+    list[index] = empty_cell
 }
 index1 = randint(0, max_cell_index)
 index2 = randint(0, max_cell_index - 1)
@@ -635,3 +657,5 @@ AddTile()
 AddTile()
 scene.setBackgroundColor(1)
 DrawScreen()
+history = []
+AddHistory()
