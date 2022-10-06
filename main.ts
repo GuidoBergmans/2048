@@ -7,6 +7,7 @@ function press (direction: number) {
     if (did_merge) {
         move(direction)
     }
+    DrawScreen()
     if (did_move || did_merge) {
         if (!(AddTile())) {
             game.over(false)
@@ -17,14 +18,16 @@ function press (direction: number) {
             game.over(false)
         }
     }
-    DrawScreen()
+}
+function indexToX (index: number) {
+    return index % cells_x
 }
 function DrawScreen () {
     sprites.destroyAllSpritesOfKind(SpriteKind.tile)
     index4 = 0
     for (let y = 0; y <= cells_y - 1; y++) {
         for (let x = 0; x <= cells_x - 1; x++) {
-            drawTile(x, y, list[index4])
+            drawTile(x, y, list[index4], false)
             index4 = index4 + 1
         }
     }
@@ -155,6 +158,9 @@ function merge (direction: number) {
     }
     return merged
 }
+function indexToY (index: number) {
+    return Math.idiv(index, cells_y)
+}
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     press(right)
 })
@@ -178,12 +184,13 @@ function AddTile () {
         }
     }
     list[new_tile_index] = new_tile_value
+    drawTile(indexToX(new_tile_index), indexToY(new_tile_index), new_tile_value, true)
     return true
 }
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     press(down)
 })
-function drawTile (pos_x: number, pos_y: number, num: number) {
+function drawTile (pos_x: number, pos_y: number, num: number, animate: boolean) {
     if (num == 2) {
         newTile = sprites.create(img`
             .........................
@@ -523,6 +530,13 @@ function drawTile (pos_x: number, pos_y: number, num: number) {
     }
     newTile.left = pos_x * newTile.width
     newTile.top = pos_y * newTile.height
+    if (animate) {
+        newTile.changeScale(-1, ScaleAnchor.Middle)
+        for (let index = 0; index < 5; index++) {
+            newTile.changeScale(0.2, ScaleAnchor.Middle)
+            pause(20)
+        }
+    }
 }
 function move (direction: number) {
     moved = false
