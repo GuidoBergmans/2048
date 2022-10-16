@@ -37,8 +37,11 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 function GetHistory () {
     if (history.length > cells) {
+        info.setScore(PreviousScore)
+        PreviousScore = CurrentScore
+        CurrentScore = info.score()
         for (let index = 0; index <= max_cell_index; index++) {
-            list[index] = history[history.length - cells + index]
+            list[index] = history[index]
         }
         for (let index = 0; index <= max_cell_index; index++) {
             history.pop()
@@ -73,9 +76,16 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     DrawScreen()
 })
 function AddHistory () {
+    if (history.length > cells) {
+        for (let index = 0; index < cells; index++) {
+            history.shift()
+        }
+    }
     for (let index = 0; index <= max_cell_index; index++) {
         history.push(list[index])
     }
+    PreviousScore = CurrentScore
+    CurrentScore = info.score()
 }
 function xyToIndex (x: number, y: number) {
     result = y * cells_x + x
@@ -637,6 +647,8 @@ let index4 = 0
 let did_merge = false
 let did_move = false
 let history: number[] = []
+let PreviousScore = 0
+let CurrentScore = 0
 let index2 = 0
 let index1 = 0
 let list: number[] = []
@@ -667,6 +679,9 @@ index2 = randint(0, max_cell_index - 1)
 if (index2 >= index1) {
     index2 = index2 + 1
 }
+info.setScore(0)
+CurrentScore = 0
+PreviousScore = 0
 AddTile()
 AddTile()
 scene.setBackgroundColor(1)
