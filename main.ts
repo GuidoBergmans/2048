@@ -75,6 +75,23 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     GetHistory()
     DrawScreen()
 })
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    while (EmptyCells() != 0 || MergePossible()) {
+        press(up)
+        moved_in_one_of_presses = did_move
+        if (!(did_move)) {
+            press(left)
+            moved_in_one_of_presses = moved_in_one_of_presses || did_move
+            if (!(did_move)) {
+                press(right)
+                moved_in_one_of_presses = moved_in_one_of_presses || did_move
+            }
+        }
+        if (!(moved_in_one_of_presses)) {
+            press(down)
+        }
+    }
+})
 function AddHistory () {
     if (history.length > cells) {
         for (let index = 0; index < cells; index++) {
@@ -642,6 +659,7 @@ let empty_cells = 0
 let new_tile_value = 0
 let merged = false
 let result = 0
+let moved_in_one_of_presses = false
 let value = 0
 let index4 = 0
 let did_merge = false
