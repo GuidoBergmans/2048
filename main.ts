@@ -2,13 +2,9 @@ namespace SpriteKind {
     export const tile = SpriteKind.create()
 }
 function press (direction: number) {
-    did_move = move(direction)
-    did_merge = merge(direction)
-    if (did_merge) {
-        move(direction)
-    }
+    move_or_merge = Set(direction, list, true)
     DrawScreen()
-    if (did_move || did_merge) {
+    if (move_or_merge) {
         if (!(AddTile())) {
             game.over(false)
         }
@@ -120,20 +116,19 @@ function EmptyCells () {
     }
     return result
 }
-function merge (direction: number) {
-    merged = false
+function merge (direction: number, field: number[]) {
+    merge_score = 0
     if (direction == up) {
         for (let x2 = 0; x2 <= cells_x - 1; x2++) {
             for (let y1 = 0; y1 <= cells_y - 2; y1++) {
                 index1 = xyToIndex(x2, y1)
                 index2 = xyToIndex(x2, y1 + 1)
-                value = list[index1]
-                if (value == list[index2]) {
+                value = field[index1]
+                if (value == field[index2]) {
                     new_tile_value = value * 2
-                    info.changeScoreBy(value)
-                    list[index1] = new_tile_value
-                    list[index2] = empty_cell
-                    merged = true
+                    field[index1] = new_tile_value
+                    field[index2] = empty_cell
+                    merge_score += value
                 }
             }
         }
@@ -142,13 +137,12 @@ function merge (direction: number) {
             for (let y1 = 0; y1 <= cells_y - 2; y1++) {
                 index1 = xyToIndex(x2, cells_y - (y1 + 1))
                 index2 = xyToIndex(x2, cells_y - (y1 + 1 + 1))
-                value = list[index1]
-                if (value == list[index2]) {
+                value = field[index1]
+                if (value == field[index2]) {
                     new_tile_value = value * 2
-                    info.changeScoreBy(value)
-                    list[index1] = new_tile_value
-                    list[index2] = empty_cell
-                    merged = true
+                    field[index1] = new_tile_value
+                    field[index2] = empty_cell
+                    merge_score += value
                 }
             }
         }
@@ -157,13 +151,12 @@ function merge (direction: number) {
             for (let x2 = 0; x2 <= cells_x - 2; x2++) {
                 index1 = xyToIndex(cells_x - (x2 + 1), y1)
                 index2 = xyToIndex(cells_x - (x2 + 1 + 1), y1)
-                value = list[index1]
-                if (value == list[index2]) {
+                value = field[index1]
+                if (value == field[index2]) {
                     new_tile_value = value * 2
-                    info.changeScoreBy(value)
-                    list[index1] = new_tile_value
-                    list[index2] = empty_cell
-                    merged = true
+                    field[index1] = new_tile_value
+                    field[index2] = empty_cell
+                    merge_score += value
                 }
             }
         }
@@ -172,18 +165,17 @@ function merge (direction: number) {
             for (let x2 = 0; x2 <= cells_x - 2; x2++) {
                 index1 = xyToIndex(x2, y1)
                 index2 = xyToIndex(x2 + 1, y1)
-                value = list[index1]
-                if (value == list[index2]) {
+                value = field[index1]
+                if (value == field[index2]) {
                     new_tile_value = value * 2
-                    info.changeScoreBy(value)
-                    list[index1] = new_tile_value
-                    list[index2] = empty_cell
-                    merged = true
+                    field[index1] = new_tile_value
+                    field[index2] = empty_cell
+                    merge_score += value
                 }
             }
         }
     }
-    return merged
+    return merge_score
 }
 function indexToY (index: number) {
     return Math.idiv(index, cells_y)
@@ -191,6 +183,16 @@ function indexToY (index: number) {
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     press(right)
 })
+function BestMove (cells: any[]) {
+    best_move = -1
+    best_score = -1
+    for (let index = 0; index <= 2; index++) {
+        move_score = TryMove(index, cells)
+        if (move_score > best_score) {
+            best_move = index
+        }
+    }
+}
 function AddTile () {
     empty_cells = EmptyCells()
     if (empty_cells == 0) {
@@ -213,6 +215,15 @@ function AddTile () {
     list[new_tile_index] = new_tile_value
     drawTile(indexToX(new_tile_index), indexToY(new_tile_index), new_tile_value, true)
     return true
+}
+function TryMove (direction: number, field: any[]) {
+    for (let index = 0; index < cells; index++) {
+        field.unshift(field[max_cell_index])
+    }
+    if (Set(direction, field, false)) {
+    	
+    }
+    return 0
 }
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     press(down)
@@ -565,20 +576,20 @@ function drawTile (pos_x: number, pos_y: number, num: number, animate: boolean) 
         }
     }
 }
-function move (direction: number) {
+function move (direction: number, field: number[]) {
     moved = false
     if (direction == up) {
         for (let x2 = 0; x2 <= cells_x - 1; x2++) {
             for (let y1 = 0; y1 <= cells_y - 2; y1++) {
                 for (let y2 = 0; y2 <= cells_y - (y1 + 1); y2++) {
                     y3 = y1 + y2
-                    if (list[xyToIndex(x2, y1)] == empty_cell) {
-                        if (list[xyToIndex(x2, y3)] != empty_cell) {
+                    if (field[xyToIndex(x2, y1)] == empty_cell) {
+                        if (field[xyToIndex(x2, y3)] != empty_cell) {
                             index1 = xyToIndex(x2, y1)
                             index2 = xyToIndex(x2, y3)
                             new_tile_value = list[index2]
-                            list[index1] = new_tile_value
-                            list[index2] = empty_cell
+                            field[index1] = new_tile_value
+                            field[index2] = empty_cell
                             moved = true
                             break;
                         }
@@ -594,11 +605,11 @@ function move (direction: number) {
                     y4 = cells_y - (y1 + 1)
                     index1 = xyToIndex(x2, y4)
                     index2 = xyToIndex(x2, y3)
-                    if (list[index1] == empty_cell) {
-                        if (list[index2] != empty_cell) {
+                    if (field[index1] == empty_cell) {
+                        if (field[index2] != empty_cell) {
                             new_tile_value = list[index2]
-                            list[index1] = new_tile_value
-                            list[index2] = empty_cell
+                            field[index1] = new_tile_value
+                            field[index2] = empty_cell
                             moved = true
                             break;
                         }
@@ -612,13 +623,13 @@ function move (direction: number) {
                 for (let x2 = 0; x2 <= cells_x - (x1 + 1); x2++) {
                     x3 = cells_x - (x1 + x2 + 1)
                     x4 = cells_x - (x1 + 1)
-                    if (list[xyToIndex(x4, y2)] == empty_cell) {
-                        if (list[xyToIndex(x3, y2)] != empty_cell) {
+                    if (field[xyToIndex(x4, y2)] == empty_cell) {
+                        if (field[xyToIndex(x3, y2)] != empty_cell) {
                             index1 = xyToIndex(x4, y2)
                             index2 = xyToIndex(x3, y2)
                             new_tile_value = list[index2]
-                            list[index1] = new_tile_value
-                            list[index2] = empty_cell
+                            field[index1] = new_tile_value
+                            field[index2] = empty_cell
                             moved = true
                             break;
                         }
@@ -631,13 +642,13 @@ function move (direction: number) {
             for (let x1 = 0; x1 <= cells_x - 2; x1++) {
                 for (let x2 = 0; x2 <= cells_x - (x1 + 1); x2++) {
                     x3 = x1 + x2
-                    if (list[xyToIndex(x1, y2)] == empty_cell) {
-                        if (list[xyToIndex(x3, y2)] != empty_cell) {
+                    if (field[xyToIndex(x1, y2)] == empty_cell) {
+                        if (field[xyToIndex(x3, y2)] != empty_cell) {
                             index1 = xyToIndex(x1, y2)
                             index2 = xyToIndex(x3, y2)
                             new_tile_value = list[index2]
-                            list[index1] = new_tile_value
-                            list[index2] = empty_cell
+                            field[index1] = new_tile_value
+                            field[index2] = empty_cell
                             moved = true
                             break;
                         }
@@ -648,6 +659,24 @@ function move (direction: number) {
     }
     return moved
 }
+function Set (direction: number, field: any[], count_score: boolean) {
+    did_move = move(direction, field)
+    merge_score = merge(direction, field)
+    did_merge = merge_score > 0
+    if (count_score) {
+        info.changeScoreBy(merge_score)
+    }
+    if (did_merge) {
+        move(direction, field)
+        return merge_score
+    }
+    if (did_move) {
+        return -1
+    } else {
+        return 0
+    }
+}
+let did_merge = false
 let x4 = 0
 let x3 = 0
 let y4 = 0
@@ -656,14 +685,17 @@ let moved = false
 let newTile: Sprite = null
 let new_tile_index = 0
 let empty_cells = 0
+let move_score = 0
+let best_score = 0
+let best_move = 0
 let new_tile_value = 0
-let merged = false
+let merge_score = 0
 let result = 0
+let did_move = false
 let moved_in_one_of_presses = false
 let value = 0
 let index4 = 0
-let did_merge = false
-let did_move = false
+let move_or_merge = 0
 let history: number[] = []
 let PreviousScore = 0
 let CurrentScore = 0
